@@ -1,6 +1,19 @@
-FROM python:3
-RUN  mkdir WORK_REPO
-RUN  cd  WORK_REPO
-WORKDIR  /WORK_REPO
-ADD hello_world.py .
-CMD ["python", "-u", "hello_world.py"]
+# start by pulling the python image
+FROM python:3.8-alpine
+
+# copy the requirements file into the image
+COPY ./requirements.txt /my-app/requirements.txt
+
+# switch working directory
+WORKDIR /my-app
+
+# install the dependencies and packages in the requirements file
+RUN pip install -r requirements.txt
+
+# copy every content from the local file to the image
+COPY . /my-app
+
+# configure the container to run in an executed manner
+ENTRYPOINT [ "python" ]
+
+CMD ["hello_world.py" ]
